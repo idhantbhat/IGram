@@ -1,0 +1,109 @@
+{% extends 'header.html' %}
+{% block head %}
+<head>
+    <style>
+            #gang {
+                margin-top: 50px;
+
+            }
+            .dropzone {
+            border: 2px dashed #0087F7;
+            border-radius: 5px;
+            background: white;
+            min-height: 200px;
+            padding: 90px 0;
+            vertical-align: baseline;
+            text-align: center;
+            position: relative;
+        }
+
+        .dropzone .dz-message {
+            color: #0087F7;
+            font-weight: bold;
+            font-size: 18px;
+            padding-top: 20px;
+        }
+
+        .dz-preview .dz-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .dropzone .dz-preview {
+            margin: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+
+
+
+
+
+    </style>
+</head>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div id="gang" class="col-6 offset-md-3">
+            <h1>Image Upload</h1>
+            <form method="post" action="/upload" class="dropzone" id="myDropzone" enctype="multipart/form-data">
+                <div class="fallback">
+                    <input name="file" type="file" placeholder="hello" multiple/>
+                </div>
+            </form>
+            <br>
+            <form method="post" action="/create">
+                <input id="caption" name="caption" placeholder="Add a caption!">
+                <input id="image_url" name="image_url" type="hidden">
+                <button type="submit">Create Post</button>
+            </form>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+            <script>
+    Dropzone.options.myDropzone = {
+        url: '/upload',
+        uploadMultiple: false,
+        maxFilesize: 2, // Set a limit for the filesize in MB
+        acceptedFiles: 'image/*', // Accept only images
+        addRemoveLinks: true, // Enable remove button
+        dictRemoveFile: 'Remove', // Change the remove button text
+        thumbnailWidth: null,
+        thumbnailHeight: null,
+        init: function() {
+            this.on('success', function(file, response) {
+                document.getElementById('image_url').value = response.url;
+
+            });
+            this.on('error', function(file, errorMessage) {
+                console.error(errorMessage);
+            });
+            // Show image after it's uploaded
+            this.on('addedfile', function(file) {
+                // Make sure file is an image file
+                if (file.type.match(/image.*/)) {
+                    // Add an HTML element to show the image
+                    let imgNode = document.createElement('div');
+                    imgNode.classList.add('dz-preview');
+                    imgNode.innerHTML = '<div class="dz-image"><img data-dz-thumbnail /></div>';
+                    file.previewElement = imgNode;
+                    this.previewsContainer.appendChild(file.previewElement);
+                }
+            });
+        }
+    };
+
+
+            </script>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}

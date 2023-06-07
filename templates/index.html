@@ -1,0 +1,105 @@
+{% extends 'header.html' %}
+{% block head %}
+<head>
+    <style>
+            @import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
+        body {
+            font-family: 'DM Sans', sans-serif;
+        }
+        .gang {
+            background-color: rgb(255,255,255);
+            margin-top: 30px;
+        }
+        #gang2 {
+            background-image: linear-gradient(to right, rgb(250, 250, 250) 0px, rgb(250, 250, 250) 20px, blue 20px);
+            height: 430px;
+            margin-top: 100px;
+            padding-left: 23px;
+            position:fixed;
+            left: 1050px;
+
+        }
+        .profile {
+            align-items: center;
+            display: flex;
+
+
+        }
+        .profile img, .profile h2 {
+            margin-right: 10px;
+        }
+        .profile h2{
+        margin-top:30px;
+        margin-left: 120px;
+
+        }
+        .profile a{
+        color: black;  /* Change this to your desired color */
+        text-decoration: none;
+        }
+        .post, .icons, .caption {
+            margin-top: 15px;
+        }
+        .post-container {
+            width: 100%;
+            height: 650px;
+            overflow: hidden;
+        }
+        .row {
+    width: 1000px;
+    margin-right: auto;
+    margin-left: auto;
+}
+        .post {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fa-heart{
+        color:red;
+        }
+        .fa-paper-plane{
+        color:blue;
+        }
+        .fas{
+        margin-right: 10px;
+        }
+
+    </style>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</head>
+{% endblock %}
+{% block content %}
+<script>
+  AOS.init();
+</script>
+<div id="gang2" class="col-3">
+</div>
+
+<div class="container">
+    {% for post in posts %}
+    <div class="row" data-aos="fade-up">
+        <div class="gang col-6 offset-md-3">
+            <div class="profile">
+                <a href="/profile/{{ post.user.id }}"><img src="static/pfp.jpg" width="65" height="65"></a>
+                <a href="/profile/{{ post.user.id }}"><h2>{{ post.user.username }}</h2></a>
+            </div>
+
+            {% for image in post.images %}
+            <div class="post-container">
+                <a href="/posts/{{post.id}}"><img class="post" src="{{ image.image_url }}" alt="Post Image"></a>
+            </div>
+            {% endfor %}
+            <div class="icons">
+                <i class="fas fa-heart fa-2x"></i>
+                <i class="fas fa-comment fa-2x"></i>
+                <i class="fas fa-paper-plane fa-2x"></i>
+            </div>
+            <h5 class="caption">{{ post.user.username }}: {{ post.caption }}</h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

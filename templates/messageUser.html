@@ -1,0 +1,116 @@
+{% extends 'header.html' %}
+{% block head %}
+<head>
+    <style>
+    #gang {
+        margin-top: 30px;
+        margin-right: 20px;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .center {
+        text-align: center;
+    }
+
+    #chatbox {
+        padding: 10px;
+
+        background-color: #fafafa;
+        height: 500px;
+        overflow-y: auto;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 20px;
+        color: white;
+        max-width: 50%;
+    }
+
+    .message.self {
+        background-color: #b2b2b2;
+        align-self: flex-end;
+    }
+
+    .message.other {
+        background-color: #0095f6;
+        align-self: flex-start;
+    }
+
+
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div id="gang" class="col-8 offset-md-3">
+            <div class="center">
+                <h1>Messaging {{username}}</h1>
+                <hr>
+                <div id="chatbox">
+                    {% for msg in messages %}
+                    {% if msg.sender.username == username %}
+                    <div class="message self">{{ msg.sender.username }}: {{ msg.content }}</div>
+                    {% else %}
+                    <div class="message other">{{ msg.sender.username }}: {{ msg.content }}</div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <form onsubmit="event.preventDefault(); sendMessage();">
+                    <input id="message-input" type="text" placeholder="Type your message here..."><br>
+                    <button type="submit" hidden="true">Send</button>
+                </form>
+            </div>
+            <div id="room-name" style="display: none">{{room}}</div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.2/socket.io.js"
+        integrity="sha512-jMNwWSmjje4fjYut9MBGKXw5FZA6D67NHAuC9szpjbbjg51KefquNfvn4DalCbGfkcv/jHsHnPo1o47+8u4biA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var socket = io();
+    var room = "{{room}}";  // replace with your actual room identifier
+    var username = "{{username}}";  // replace with actual username
+    socket.on('connect', function() {
+        socket.emit('join', {username: username, room: room});
+    });
+
+    socket.on('message', function(msg){
+    var chatbox = document.getElementById('chatbox');
+
+    if(msg.username === username){
+        chatbox.innerHTML += '<div class="message self">' + msg.username + ': ' + msg.message + '</div>';
+    } else {
+        chatbox.innerHTML += '<div class="message other">' + msg.username + ': ' + msg.message + '</div>';
+    }
+
+    // Auto-scroll to the latest message
+    chatbox.scrollTop = chatbox.scrollHeight;
+});
+
+
+    function sendMessage() {
+        var message = document.getElementById('message-input').value;  // replace with your actual message input
+        socket.emit('message', {username: username, message: message, room: room});
+         var messageInput = document.getElementById('message-input');
+        messageInput.value = '';
+
+    }
+
+
+
+</script>
+
+{% endblock %}

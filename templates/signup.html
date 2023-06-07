@@ -1,0 +1,119 @@
+<style>
+.container {
+  display: flex;
+  border-radius: 8px;
+  padding: 20px;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.container > div {
+  flex: 1;
+  border: 1px solid #e6e6e6;
+  padding: 10px;
+  margin-left: 10px;
+    margin-left: -110px; /* Add negative left margin */
+
+}
+
+#image {
+  flex: 0 0 auto;
+  margin-right: 140px; /* Added spacing to the right of the image div */
+  border: none;
+
+
+}
+
+h1, h2, h3, h4, h5 {
+  text-align: center;
+  font-family: 'Exo 2', sans-serif;
+}
+
+input, button, a {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+input {
+  height: 40px; /* Adjust the height as desired */
+  background-color: #f2f2f2; /* Gray background color */
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+button {
+  background-color: #3897f0;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+}
+.flash-messages {
+        list-style-type: none; /* Remove the default list styling */
+        color: red;
+    }
+
+a {
+  text-decoration: none;
+  color: #003569;
+}
+
+h2 {
+  color: #444444;
+  font-size: 22px;
+}
+
+h3, h4 {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 200;
+  color: #888888;
+}
+
+
+
+</style>
+
+<!-- signup.html -->
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram</title>
+    <link rel="icon" type="image/x-icon" href="static/logo.png">
+</head>
+<body>
+<div class="container">
+    <div id="image">
+        <img src="static/iphone.PNG" alt="">
+    </div>
+    <div>
+        <a href=""><img src="static/word.png" width="375" height="145"></a>
+        <h2>Sign up to see photos and videos from your friends</h2>
+        <form method="POST" action="{{ url_for('register') }}" novalidate>
+                {{ form.csrf_token }}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class="flash-messages"><b>
+                {% for category, message in messages %}
+                <li> {% if category == 'error' %}{% endif %}{{ message }}</li>
+                {% endfor %}
+            </b></ul>
+            {% endif %}
+            {% endwith %}
+            <input type="text" class="form-control" id="{{ form.number.id }}" name="{{ form.number.name }}"
+                   placeholder="Mobile Number" required>
+            <input type="text" class="form-control" id="{{ form.username.id }}" name="{{ form.username.name }}"
+                   placeholder="Username" required>
+            <input type="text" class="form-control" id="{{ form.name.id }}" name="{{ form.name.name }}"
+                   placeholder="Full Name" required>
+            <input type="password" class="form-control" id="{{ form.password.id }}" name="{{ form.password.name }}"
+                   placeholder="Password" required>
+
+            <h4>People who use our service may have uploaded your contact information to Instagram. <a href="">Learn
+                More</a></h4>
+            <h4>By signing up, you agree to our Terms, Privacy Policy, and Cookies Policy.</h4>
+            <button type="submit" class="btn btn-primary">Sign up</button>
+        </form>
+        <h3>Have an account? <a href="/login">Log in</a></h3>
+    </div>
+</div>
+</body>

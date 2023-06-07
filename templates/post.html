@@ -1,0 +1,57 @@
+{% extends 'header.html' %}
+{% block head %}
+<head>
+    <style>
+        #gang {
+            margin-top: 30px;
+            margin-right: 20px;
+            max-width: 1000px;
+            max-height: 1400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+        }
+        .gang {
+            margin-top: 30px;
+            margin-right: 20px;
+            max-width: 1000px;
+            max-height: 1400px;
+            display: flex;
+            align-items: center; /* Center items vertically in case they are not of equal height */
+            text-align: left;
+        }
+        #gang img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .gang img {
+            margin-right: 10px; /* Add some margin if you want some space between the image and the text */
+                        border-radius: 50%; /* Make the image round */
+
+        }
+    </style>
+</head>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div id="gang" class="col-8 offset-md-3">
+            {% if post.images %}
+            <img src="{{ post.images[0].image_url }}" alt="Image">
+            {% else %}
+            <p>No images available for this post.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="gang col-8 offset-md-3">
+            <a href="/profile/{{ post.user.id }}"><img id="pfp" src="{{ url_for('static', filename='pfp.jpg') }}" width="65" height="65"></a>
+            <h1>{{ user.name }}: {{post.caption}}</h1>
+        </div>
+    </div>
+</div>
+{% endblock %}

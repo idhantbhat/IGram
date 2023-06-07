@@ -1,0 +1,133 @@
+{% extends 'header.html' %}
+{% block head %}
+<head>
+    <style>
+    .col-div img {
+            object-fit: cover;
+            width: 300px;
+            height: 300px;
+        }
+        #gang {
+            margin-top: 30px;
+            margin-right: 20px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .center {
+            text-align: center;
+        }
+        hr{
+  border-color: rgb(250, 250, 250);
+        }
+
+        #pfp {
+            border-radius: 50%;
+            margin-right: 200px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info {
+            display: flex;
+            align-items: flex-start;
+        }
+        .blue {
+        margin-top: 30px;
+        text-align: center;
+        }
+        .yellow{
+        margin-left: 315px;
+        margin-top: 30px;
+        }
+        .red{
+        height: 300px;
+        margin-top: 30px;
+        }
+
+        .info-item {
+            margin: 0 10px;
+            margin-left: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+
+
+
+
+
+    </style>
+</head>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div id="gang" class="col-8 offset-md-3">
+            <div class="center">
+                <h1>@{{ user.name }}</h1>
+            </div>
+            <div class="user-info">
+                <a href="/profile">
+                    <img id="pfp" src="{{ url_for('static', filename='pfp.jpg') }}" width="201" height="201">
+
+                </a>
+                <div class="info">
+                    <div class="info-item">
+                        <h3>{{ user.posts.count() }}</h3>
+                        <p>Posts</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>1,124</h3>
+                        <p>Followers</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>1,124</h3>
+                        <p>Following</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="yellow col-3">
+            <div class="col-div">
+                {% for post in posts %}
+                {% for image in post.images %}
+                <a href="/posts/{{post.id}}"><img src="{{ image.image_url }}"></a>
+                <hr>
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="red col-3">
+            <div class="col-div">
+                {% for post in posts2 %}
+                {% for image in post.images %}
+                <a href="/posts/{{post.id}}"><img src="{{ image.image_url }}"></a>
+                <hr>
+                {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-3 blue">
+            <div class="col-div">
+                {% for post in posts3 %}
+                {% for image in post.images %}
+                <a href="/posts/{{post.id}}"><img src="{{ image.image_url }}"></a>
+                <hr>
+                {% endfor %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
